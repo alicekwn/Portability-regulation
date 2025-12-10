@@ -66,7 +66,14 @@ pip install -e ".[dev]"
 ```
 python scripts/bank.py
 ```
+Alternative:
+
+desmos: https://www.desmos.com/calculator/fahgqjbnze
+
 ### Insurers
 ```
 python scripts/insurer.py
 ```
+Alternative:
+
+desmos: https://www.desmos.com/calculator/fc10yatkcq
