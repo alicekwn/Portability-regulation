@@ -61,7 +61,7 @@ pip install -e ".[dev]"
 
 --- 
 
-## Run plots
+## Plot graphs
 ### Banks
 ```
 python scripts/bank.py
