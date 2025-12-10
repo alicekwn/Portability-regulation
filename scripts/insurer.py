@@ -37,7 +37,7 @@ class Insurer:
         return output
 
     def c(self, T: float) -> float:
-        return self.a1 * T + self.b1
+        return self.a1 * self.v_star(T) + self.b1
 
     def l(self, T: float) -> float:
         return self.a5 * T
@@ -56,20 +56,79 @@ class Insurer:
         )
         return output
 
-    def r(self, T: float) -> float:
+    def rIC(self, T: float) -> float:
         return self.rG + ((1 + self.k * self.rI) + self.p(T) - self.l(T)) / self.c(
             self.v_star(T)
         )
 
     def dr_dT(self, T: float) -> float:
         numerator = (1 + self.k * self.rI) * self.a4 - self.a5
-        denominator = self.c(self.v_star(T))
+        denominator = self.c(T)
         output = numerator / denominator
         return output
 
 
 if __name__ == "__main__":
     T = np.linspace(0, 1, 100)
+
+    # ----- Insurer -----
+    insurer_g_0 = Insurer(
+        a1=0.24,
+        a2=5.05,
+        a3=-1.68,
+        a4=5,
+        a5=4.995,
+        b1=0.11,
+        b2=-0.3,
+        rI=0.13,
+        rG=0.1,
+        k=3,
+    )
+    insurer_s_0 = Insurer(
+        a1=0.24,
+        a2=5.7,
+        a3=-3.78,
+        a4=-1.26,
+        a5=-1.255,
+        b1=0.11,
+        b2=1.4,
+        rI=0.13,
+        rG=0.1,
+        k=3,
+    )
+    # Plot V* vs T
+    fig, ax = plt.subplots(figsize=(8, 6))
+    ax.plot(T, insurer_g_0.v_star(T), label=r"$V>\bar{V}$", color="blue")
+    ax.plot(T, insurer_s_0.v_star(T), label=r"$V<\bar{V}$", color="orange")
+    ax.axhline(0.45, label=r"$\bar{V}$", color="black", linestyle="--")
+    ax.legend()
+    ax.set_xlabel("Portability (T)")
+    ax.set_ylabel(r"$V^{*}(T)$")
+    ax.set_title(r"$V^{*}(T)$ vs $T$$")
+    plt.savefig(PLOT_PATH / "insurer_vstar.png")
+    plt.show()
+
+    # Plot C vs T
+    fig, ax = plt.subplots(figsize=(8, 6))
+    ax.plot(T, insurer_g_0.c(T), label=r"$V>\bar{V}$", color="blue")
+    ax.plot(T, insurer_s_0.c(T), label=r"$V<\bar{V}$", color="orange")
+    ax.legend()
+    ax.set_xlabel("Portability (T)")
+    ax.set_ylabel(r"$C(T)$")
+    ax.set_title(r"$C(T)$ vs $T$")
+    plt.savefig(PLOT_PATH / "insurer_c.png")
+    plt.show()
+
+    # Plot dR/dT vs T
+    fig, ax = plt.subplots(figsize=(8, 6))
+    ax.plot(T, insurer_g_0.dr_dT(T), label=r"$V>\bar{V}$", color="blue")
+    ax.plot(T, insurer_s_0.dr_dT(T), label=r"$V<\bar{V}$", color="orange")
+    ax.legend()
+    ax.set_xlabel("Portability (T)")
+    ax.set_ylabel(r"d$R^{IC}$/dT")
+    ax.set_title(r"$dR^{IC}/dT$ vs $T$")
+    plt.savefig(PLOT_PATH / "insurer_drdT.png")
+    plt.show()
 
     # ----- Insurer when C -> 0 -----
     insurer_g_0 = Insurer(
@@ -104,7 +163,19 @@ if __name__ == "__main__":
     ax.legend()
     ax.set_xlabel("Portability (T)")
     ax.set_ylabel(r"$V^{*}(T)$")
+    ax.set_title(r"$V^{*}(T)$ vs $T$, $C \to 0$")
     plt.savefig(PLOT_PATH / "insurer_vstar_c_0.png")
+    plt.show()
+
+    # Plot C vs T
+    fig, ax = plt.subplots(figsize=(8, 6))
+    ax.plot(T, insurer_g_0.c(T), label=r"$V>\bar{V}$", color="blue")
+    ax.plot(T, insurer_s_0.c(T), label=r"$V<\bar{V}$", color="orange")
+    ax.legend()
+    ax.set_xlabel("Portability (T)")
+    ax.set_ylabel(r"$C(T)$")
+    ax.set_title(r"$C(T)$ vs $T$")
+    plt.savefig(PLOT_PATH / "insurer_c_0.png")
     plt.show()
 
     # Plot dR/dT vs T
@@ -114,6 +185,7 @@ if __name__ == "__main__":
     ax.legend()
     ax.set_xlabel("Portability (T)")
     ax.set_ylabel(r"d$R^{IC}$/dT")
+    ax.set_title(r"$dR^{IC}/dT$ vs $T$, $C \to 0$")
     plt.savefig(PLOT_PATH / "insurer_drdT_c_0.png")
     plt.show()
 
@@ -144,21 +216,40 @@ if __name__ == "__main__":
     )
     # Plot V* vs T
     fig, ax = plt.subplots(figsize=(8, 6))
-    ax.plot(T, insurer_g_inf.v_star(T), label=r"$V>\bar{V}, C \to inf$", color="blue")
-    ax.plot(T, insurer_s_inf.v_star(T), label=r"$V<\bar{V}, C \to inf$", color="orange")
+    ax.plot(
+        T, insurer_g_inf.v_star(T), label=r"$V>\bar{V}, C \to \infty$", color="blue"
+    )
+    ax.plot(
+        T, insurer_s_inf.v_star(T), label=r"$V<\bar{V}, C \to \infty$", color="orange"
+    )
     ax.axhline(0.45, label=r"$\bar{V}$", color="black", linestyle="--")
     ax.legend()
     ax.set_xlabel("Portability (T)")
     ax.set_ylabel(r"$V^{*}(T)$")
+    ax.set_title(r"$V^{*}(T)$ vs $T$, $C \to \infty$")
     plt.savefig(PLOT_PATH / "insurer_vstar_c_inf.png")
+    plt.show()
+
+    # Plot C vs T
+    fig, ax = plt.subplots(figsize=(8, 6))
+    ax.plot(T, insurer_g_inf.c(T), label=r"$V>\bar{V}$", color="blue")
+    ax.plot(T, insurer_s_inf.c(T), label=r"$V<\bar{V}$", color="orange")
+    ax.legend()
+    ax.set_xlabel("Portability (T)")
+    ax.set_ylabel(r"$C(T)$")
+    ax.set_title(r"$C(T)$ vs $T$, $C \to \infty$")
+    plt.savefig(PLOT_PATH / "insurer_c_inf.png")
     plt.show()
 
     # Plot dR/dT vs T
     fig, ax = plt.subplots(figsize=(8, 6))
-    ax.plot(T, insurer_g_inf.dr_dT(T), label=r"$V>\bar{V}, C \to inf$", color="blue")
-    ax.plot(T, insurer_s_inf.dr_dT(T), label=r"$V<\bar{V}, C \to inf$", color="orange")
+    ax.plot(T, insurer_g_inf.dr_dT(T), label=r"$V>\bar{V}, C \to \infty$", color="blue")
+    ax.plot(
+        T, insurer_s_inf.dr_dT(T), label=r"$V<\bar{V}, C \to \infty$", color="orange"
+    )
     ax.legend()
     ax.set_xlabel("Portability (T)")
     ax.set_ylabel(r"d$R^{IC}$/dT")
+    ax.set_title(r"$dR^{IC}/dT$ vs $T$, $C \to \infty$")
     plt.savefig(PLOT_PATH / "insurer_drdT_c_inf.png")
     plt.show()

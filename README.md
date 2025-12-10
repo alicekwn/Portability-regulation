@@ -62,6 +62,11 @@ pip install -e ".[dev]"
 --- 
 
 ## Run plots
+### Banks
+```
+python scripts/bank.py
+```
+### Insurers
 ```
 python scripts/insurer.py
 ```
