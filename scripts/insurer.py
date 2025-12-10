@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from portability_env.settings import PLOT_PATH
 
 
 class Insurer:
@@ -103,6 +104,7 @@ if __name__ == "__main__":
     ax.legend()
     ax.set_xlabel("Portability (T)")
     ax.set_ylabel(r"$V^{*}(T)$")
+    plt.savefig(PLOT_PATH / "insurer_vstar_c_0.png")
     plt.show()
 
     # Plot dR/dT vs T
@@ -112,6 +114,7 @@ if __name__ == "__main__":
     ax.legend()
     ax.set_xlabel("Portability (T)")
     ax.set_ylabel(r"d$R^{IC}$/dT")
+    plt.savefig(PLOT_PATH / "insurer_drdT_c_0.png")
     plt.show()
 
     # ----- Insurer when C -> inf -----
@@ -147,6 +150,7 @@ if __name__ == "__main__":
     ax.legend()
     ax.set_xlabel("Portability (T)")
     ax.set_ylabel(r"$V^{*}(T)$")
+    plt.savefig(PLOT_PATH / "insurer_vstar_c_inf.png")
     plt.show()
 
     # Plot dR/dT vs T
@@ -156,4 +160,5 @@ if __name__ == "__main__":
     ax.legend()
     ax.set_xlabel("Portability (T)")
     ax.set_ylabel(r"d$R^{IC}$/dT")
+    plt.savefig(PLOT_PATH / "insurer_drdT_c_inf.png")
     plt.show()

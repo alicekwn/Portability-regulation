@@ -61,3 +61,7 @@ pip install -e ".[dev]"
 
 --- 
 
+## Run plots
+```
+python scripts/insurer.py
+```
