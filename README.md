@@ -68,6 +68,8 @@ python scripts/bank.py
 ```
 Alternative:
 
+mathematica: portability_bank.nb
+
 desmos: https://www.desmos.com/calculator/fahgqjbnze
 
 ### Insurers
@@ -75,5 +77,7 @@ desmos: https://www.desmos.com/calculator/fahgqjbnze
 python scripts/insurer.py
 ```
 Alternative:
+
+mathematica: portability_insurer.nb
 
 desmos: https://www.desmos.com/calculator/fc10yatkcq
